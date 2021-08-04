@@ -1,13 +1,18 @@
+{% extends 'base_generic.html' %}
+{% block content %}
 {% load crispy_forms_tags %}
-
-{% block list %}
-    {%for lesson in lessons %}
-        <tr>{{lesson.title}}</tr>
-    {% endfor %}
-{% endblock %}
+    <table>
+        {%for lesson in lessons %}
+            <li>Название предмета: {{lesson.title}}</li>
+            <li>{{lesson.start_time}} - {{lesson.end_time}}</li>
+            <li>Ссылка на подключение: {{lesson.url_lesson}}</li>
+            <br></br>
+        {% endfor %}
+    </table>
 
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{form.as_p}}
     <button type="submit">Добавить урок</button>
 </form>
+{% endblock %}
