@@ -91,14 +91,19 @@ def filter_lessons(request):
     if request.method == "GET":
         lessons = Lesson.objects.all()
         return render(request,"filter.html",{"form" : form, "lessons" : lessons})
-    elif request.method == "GET":
-        form = FilterLessonForm(request.GET)
+    elif request.method == "POST":
+        form = FilterLessonForm(request.POST)
         if form.is_valid():
             title = form.cleaned_data.get("title")
             end_time = form.cleaned_data.get("end_time")
             start_time = form.cleaned_data.get("start_time")
             url_lesson = form.cleaned_data.get("url_lesson")
-            lesson = Lesson.objects.create(title=title,end_time=end_time,start_time=start_time,url_lesson=url_lesson)
-            lesson.save()
-    lessons = Lesson.objects.all()
-    return render(request,"filter.html",{"form" : form, "lessons" : lessons})
+            lessons = Lesson.objects.all()
+            if title:
+                lessons = Lesson.objects.all().filter(title=title)
+            #if group:
+            #   lessons = Lesson.objects.all().filter(group=group)
+            #if teacher:
+            #   lessons = Lesson.objects.all().filter(teacher=teacher)
+
+            return render(request,"filter.html",{"form" : form, "lessons" : lessons})
