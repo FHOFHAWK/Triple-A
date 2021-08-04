@@ -45,7 +45,11 @@
 #         return HttpResponse("index.")
 #
 #     return HttpResponse("Hello, world. You're at the polls index.")
+from django import forms
+from django.http.response import HttpResponse
+from core.models import Lesson
 from django.shortcuts import render
+from .forms import CreateLessonForm
 
 
 def main(request):
@@ -62,3 +66,16 @@ def login(request):
 
 def recovery_password(request):
     return render(request, 'recovery-password.html')
+
+def get_lessons(request):
+    form = CreateLessonForm()
+    if request.method == "GET":
+        lessons = Lesson.objects.all()
+        return render(request,"lesson.html",{"form" : form, "lessons" : lessons})
+    elif request.method == "POST":
+        form = CreateLessonForm(request.POST)
+        print(form.is_valid())
+        if form.is_valid():
+            title = form.cleaned_data.get("title")
+            print(title)
+    return HttpResponse()
