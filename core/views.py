@@ -5,7 +5,9 @@ from core.serializers import UserSerializer, GroupSerializer, RegistrationSerial
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-
+from django.shortcuts import render
+from .models import Lesson, StudyGroup
+from django.contrib.auth.decorators import login_required
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -25,6 +27,7 @@ class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = GroupSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+
 @api_view(['POST'])
 def registration_view(request):
     if request.method == 'POST':
@@ -37,3 +40,14 @@ def registration_view(request):
         else:
             data = serializer.errors
         return Response(data)
+
+
+@login_required(login_url='/accounts/login/')
+def index(request):
+    lessons = Lesson.objects.all()
+
+    return render(
+        request,
+        'index.html',
+        context={'lessons': lessons},
+    )
