@@ -4,8 +4,15 @@ from django.contrib.auth.models import User
 from django.forms import ModelForm
 from .models import Lesson
 
+
 class CreateLessonForm(ModelForm):
 
-    class Meta:
-	    model = Lesson
-	    fields = ["endTime", "startTime", "utlLesson", "title"]
+	class Meta:
+		model = Lesson
+		fields = ["endTime", "startTime", "utlLesson", "title"]
+
+
+class FilterLessonForm(ModelForm):
+	class Meta:
+		model = Lesson
+		fields = ["endTime", "startTime", "utlLesson", "title"]
