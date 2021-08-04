@@ -21,3 +21,11 @@ class Lesson(models.Model):
     url_lesson = models.URLField()
     start_time = models.TimeField()
     end_time = models.TimeField()
+
+class FilterLesson(models.Model):
+    title = models.CharField(max_length=100,blank=True,null=True)
+    # teachers = models.ManyToManyField(Person)
+    # groups = models.ManyToManyField(StudyGroup)
+    url_lesson = models.URLField(blank=True,null=True)
+    start_time = models.TimeField(blank=True,null=True)
+    end_time = models.TimeField(blank=True,null=True)
