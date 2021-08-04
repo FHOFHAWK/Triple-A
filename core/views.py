@@ -2,7 +2,8 @@ from django import forms
 from django.http.response import HttpResponse
 from core.models import Lesson, User, StudyGroup
 from django.shortcuts import redirect, render
-from .forms import CreateLessonForm, FilterLessonForm, CreateUserForm
+from .forms import CreateLessonForm, FilterLessonForm, CreateUserForm, LoginForm
+
 
 def main(request):
     return render(request, 'main.html')
@@ -31,12 +32,11 @@ def register(request):
                                            password=password,
                                            role=role)
                 user.save()
-                print(user)
     return render(request, "register.html", {"form": form})
 
 
 def login(request):
-    form = CreateUserForm()
+    form = LoginForm()
     return render(request, "login.html", {"form": form})
 
 
@@ -59,9 +59,10 @@ def get_lessons(request):
             lesson = Lesson.objects.create(title=title, end_time=end_time, start_time=start_time, url_lesson=url_lesson)
             lesson.save()
     lessons = Lesson.objects.all()
-    return render(request,"lesson.html",{"form" : form, "lessons" : lessons})
+    return render(request, "lesson.html", {"form": form, "lessons": lessons})
 
-def delete_lesson(request,pk):
+
+def delete_lesson(request, pk):
     print(request)
     print(pk)
     if request.method == "POST":
@@ -71,11 +72,12 @@ def delete_lesson(request,pk):
     form = CreateLessonForm(request.POST)
     return redirect('/lessons')
 
+
 def filter_lessons(request):
     form = FilterLessonForm()
     if request.method == "GET":
         lessons = Lesson.objects.all()
-        return render(request,"filter.html",{"form" : form, "lessons" : lessons})
+        return render(request, "filter.html", {"form": form, "lessons": lessons})
     elif request.method == "POST":
         form = FilterLessonForm(request.POST)
         if form.is_valid():
@@ -86,9 +88,9 @@ def filter_lessons(request):
             lessons = Lesson.objects.all()
             if title:
                 lessons = Lesson.objects.all().filter(title=title)
-            #if group:
+            # if group:
             #   lessons = Lesson.objects.all().filter(group=group)
-            #if teacher:
+            # if teacher:
             #   lessons = Lesson.objects.all().filter(teacher=teacher)
 
-            return render(request,"filter.html",{"form" : form, "lessons" : lessons})
+            return render(request, "filter.html", {"form": form, "lessons": lessons})
