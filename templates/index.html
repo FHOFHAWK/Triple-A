@@ -1,0 +1,15 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<h1>Timetable</h1>
+
+  <p>Welcome to <em>Timetable</em>, a very basic Django website </p>
+
+<h2>Dynamic content</h2>
+
+  <p>The Timetable has the following records:</p>
+  <ul>
+    <li><strong>Lessons:</strong> {{ lessons }}</li>
+  </ul>
+
+{% endblock %}
