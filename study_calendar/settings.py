@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-t$1hd$$639+4#zn!=#@5r7yh$%j9d0c(rl7yoyj3apx!3!_ohc
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -38,8 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework'
-    #'study_calendar.core.apps.CoreConfig'
+    'rest_framework',
+    'core.apps.CoreConfig',
 ]
 
 MIDDLEWARE = [
