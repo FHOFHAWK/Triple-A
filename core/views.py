@@ -1,8 +1,23 @@
 from django import forms
+from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
 from django.http.response import HttpResponse
 from core.models import Lesson, User, StudyGroup
 from django.shortcuts import redirect, render
 from .forms import CreateLessonForm, FilterLessonForm, CreateUserForm, LoginForm
+
+
+def authenticate(username=None, password=None, **kwargs):
+    from django.contrib.auth import get_user_model
+    UserModel = get_user_model()
+    if username is None:
+        username = kwargs.get(UserModel.USERNAME_FIELD)
+    try:
+        user = UserModel._default_manager.get_by_natural_key(username)
+        if user.check_password(password):
+            return user
+    except UserModel.DoesNotExist:
+        UserModel().set_password(password)
 
 
 def main(request):
@@ -35,8 +50,19 @@ def register(request):
     return render(request, "register.html", {"form": form})
 
 
-def login(request):
+def login_u(request):
     form = LoginForm()
+    if request.method == "POST":
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data.get("email")
+
+            user_from_db = User.objects.filter(email=email)
+
+            if user_from_db:
+                login(request, user_from_db[0])
+                return redirect('/lessons')
+
     return render(request, "login.html", {"form": form})
 
 
@@ -44,6 +70,7 @@ def recovery_password(request):
     return render(request, 'recovery-password.html')
 
 
+@login_required
 def get_lessons(request):
     form = CreateLessonForm()
     if request.method == "GET":

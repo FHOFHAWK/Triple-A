@@ -113,7 +113,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-LOGIN_URL = '/accounts/login'
+LOGIN_URL = '/login-user'
 
 LOGIN_REDIRECT_URL = '/'
 
@@ -140,3 +140,6 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 AUTH_USER_MODEL = 'core.User'
+AUTHENTICATION_BACKENDS = (
+        'django.contrib.auth.backends.ModelBackend',
+    )
