@@ -1,6 +1,11 @@
-{%for lesson in lessons %}
-    {{lesson.title}}
-{% endfor %}
+{% load crispy_forms_tags %}
+
+{% block list %}
+    {%for lesson in lessons %}
+        <tr>{{lesson.title}}</tr>
+    {% endfor %}
+{% endblock %}
+
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{form.as_p}}
