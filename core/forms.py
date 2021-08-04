@@ -8,4 +8,4 @@ class CreateLessonForm(ModelForm):
 
     class Meta:
 	    model = Lesson
-	    fields = ["endTime", "startTime", "utlLesson", "title"]
+	    fields = ["end_time", "start_time", "url_lesson", "title"]

@@ -74,8 +74,12 @@ def get_lessons(request):
         return render(request,"lesson.html",{"form" : form, "lessons" : lessons})
     elif request.method == "POST":
         form = CreateLessonForm(request.POST)
-        print(form.is_valid())
         if form.is_valid():
             title = form.cleaned_data.get("title")
-            print(title)
-    return HttpResponse()
+            end_time = form.cleaned_data.get("end_time")
+            start_time = form.cleaned_data.get("start_time")
+            url_lesson = form.cleaned_data.get("url_lesson")
+            lesson = Lesson.objects.create(title=title,end_time=end_time,start_time=start_time,url_lesson=url_lesson)
+            lesson.save()
+    lessons = Lesson.objects.all()
+    return render(request,"lesson.html",{"form" : form, "lessons" : lessons})
