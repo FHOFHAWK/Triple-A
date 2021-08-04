@@ -49,7 +49,7 @@ from django import forms
 from django.http.response import HttpResponse
 from core.models import Lesson
 from django.shortcuts import redirect, render
-from .forms import CreateLessonForm
+from .forms import CreateLessonForm, FilterLessonForm
 
 
 def main(request):
@@ -66,6 +66,7 @@ def login(request):
 
 def recovery_password(request):
     return render(request, 'recovery-password.html')
+
 
 def get_lessons(request):
     form = CreateLessonForm()
@@ -93,3 +94,25 @@ def delete_lesson(request,pk):
     lessons = Lesson.objects.all()
     form = CreateLessonForm(request.POST)
     return redirect('/lessons')
+
+def filter_lessons(request):
+    form = FilterLessonForm()
+    if request.method == "GET":
+        lessons = Lesson.objects.all()
+        return render(request,"filter.html",{"form" : form, "lessons" : lessons})
+    elif request.method == "POST":
+        form = FilterLessonForm(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data.get("title")
+            end_time = form.cleaned_data.get("end_time")
+            start_time = form.cleaned_data.get("start_time")
+            url_lesson = form.cleaned_data.get("url_lesson")
+            lessons = Lesson.objects.all()
+            if title:
+                lessons = Lesson.objects.all().filter(title=title)
+            #if group:
+            #   lessons = Lesson.objects.all().filter(group=group)
+            #if teacher:
+            #   lessons = Lesson.objects.all().filter(teacher=teacher)
+
+            return render(request,"filter.html",{"form" : form, "lessons" : lessons})

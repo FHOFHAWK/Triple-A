@@ -6,6 +6,12 @@ from .models import Lesson
 
 class CreateLessonForm(ModelForm):
 
-    class Meta:
-	    model = Lesson
-	    fields = ["end_time", "start_time", "url_lesson", "title"]
+	class Meta:
+		model = Lesson
+		fields = ["end_time", "start_time", "url_lesson", "title"]
+
+
+class FilterLessonForm(ModelForm):
+	class Meta:
+		model = Lesson
+		fields = ["end_time", "start_time", "url_lesson", "title"]
