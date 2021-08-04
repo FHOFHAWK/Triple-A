@@ -3,11 +3,16 @@
 {% load crispy_forms_tags %}
     <table>
         {%for lesson in lessons %}
-            <li>Название предмета: {{lesson.title}}</li>
-            <li>{{lesson.start_time}} - {{lesson.end_time}}</li>
-            <li>Ссылка на подключение: {{lesson.url_lesson}}</li>
-            <br></br>
+            <form action="{% url 'delete_lesson' lesson.id %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <li>Название предмета: {{lesson.title}}</li>
+                <li>{{lesson.start_time}} - {{lesson.end_time}}</li>
+                <li>Ссылка на подключение: {{lesson.url_lesson}}</li>
+                <button type="submit">Удалить урок</button>
+                <br></br>
+            </form>
         {% endfor %}
+        
     </table>
 
 <form method="post" enctype="multipart/form-data">

@@ -48,7 +48,7 @@
 from django import forms
 from django.http.response import HttpResponse
 from core.models import Lesson
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from .forms import CreateLessonForm
 
 
@@ -83,3 +83,13 @@ def get_lessons(request):
             lesson.save()
     lessons = Lesson.objects.all()
     return render(request,"lesson.html",{"form" : form, "lessons" : lessons})
+
+def delete_lesson(request,pk):
+    print(request)
+    print(pk)
+    if request.method == "POST":
+        lesson = Lesson.objects.filter(id=int(pk))
+        lesson.delete()
+    lessons = Lesson.objects.all()
+    form = CreateLessonForm(request.POST)
+    return redirect('/lessons')
