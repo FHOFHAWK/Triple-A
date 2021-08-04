@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 
+
 class Role(models.Model):
     TEACHER = 1
     STUDENT = 2
@@ -13,8 +14,10 @@ class Role(models.Model):
       )
     role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, blank=True, null=True)
 
+
 class StudyGroup(models.Model):
     groupNumber = models.CharField(max_length=15)
+
 
 class Person(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
