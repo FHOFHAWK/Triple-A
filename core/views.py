@@ -56,12 +56,13 @@ def login_u(request):
         form = LoginForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data.get("email")
+            password = form.cleaned_data.get("password")
 
             user_from_db = User.objects.filter(email=email)
-
-            if user_from_db:
-                login(request, user_from_db[0])
-                return redirect('/lessons')
+            if password == (user_from_db[0]).password:
+                if user_from_db:
+                    login(request, user_from_db[0])
+                    return redirect('/lessons')
 
     return render(request, "login.html", {"form": form})
 
