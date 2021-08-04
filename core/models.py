@@ -1,7 +1,8 @@
 from django.db import models
 from django import forms
 from django.contrib.auth.models import User
-from django.contrib.auth import get_user_model
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 
 class Role(models.Model):
@@ -23,6 +24,13 @@ class Person(models.Model):
     role = models.ForeignKey(Role,on_delete=models.CASCADE) 
     group = models.ForeignKey(StudyGroup,on_delete=models.CASCADE, null=True, blank=True)
 
+@receiver(post_save, sender=User)
+def create_person_profile(sender, instance, created, **kwargs):
+    if created:
+        Person.objects.create(user=instance)
+@receiver(post_save, sender=User)
+def save_person(sender, instance, **kwargs):
+    instance.person.save()
 
 class Lesson(models.Model):
     title = models.CharField(max_length=512)
