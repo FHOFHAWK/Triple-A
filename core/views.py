@@ -1,15 +1,9 @@
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import Group
-from django.http import HttpResponse
-from django.db.models import Q
 from core.models import Lesson, StudyGroup, User, Teacher, Student
 from django.shortcuts import redirect, render
-from utils.constants import student, teacher
 from utils.constants import teacher, student, admin
 from utils.helpers import check_if_teacher, admin_only, auth_user_only, teacher_and_admin_only
-from .forms import CreateLessonForm, FilterLessonForm, CreateUserForm, LoginForm
-from utils.helpers import check_if_teacher, admin_only, auth_user_only
 from .forms import CreateLessonForm, FilterLessonForm, CreateUserForm, LoginForm, ProfileUserForm
 
 
@@ -47,7 +41,6 @@ def register(request):
                                                          password=password,
                                                          role=role)
                     teacher_obj.save()
-                    print('g')
                 elif role == student:
                     student_obj = Student(username=username,
                                           first_name=first_name,
@@ -155,7 +148,6 @@ def filter_lessons(request):
 def profile(request):
     if request.user.role == student:
         our_student = Student.objects.filter(id=request.user.id).first()
-        print(our_student.id)
         form = ProfileUserForm(initial={"first_name": our_student.first_name
             , "last_name": our_student.last_name
             , "patronymic": our_student.patronymic
