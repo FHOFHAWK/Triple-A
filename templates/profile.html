@@ -1,13 +1,21 @@
 {% extends 'base_generic.html' %}
 {% block content %}
-    <form action="{% url 'profile'%}" method="POST" enctype="multipart/form-data">
-        <br>Имя {{user.first_name}}</br >
-        <br>Фамилия {{user.last_name}}</br>
-        <br>Отчество {{user.patronymic}}</br>
-        <br>email {{user.email}}</br>
-        {% ifequal "student" "student" %}</br>
-        <br>Группа {{group}}</br>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{form.as_p}}  
+        {% ifequal role "student" %}
+            Группа {{group}}<br>
         {% endifequal %}
+        <button type="submit">Сохранить</button>
+        <br>
+        {% ifequal role "teacher" %}
+            {% if loaded_lessons == completed_lessons %}
+                Все хорошо! Все лекции загружены!<br>
+            {% else %}
+                <a href="../get_finished_lessons"> У вас есть незагруженные лекции!</a>   
+            {% endif %}
+        {% endifequal %}
+        
     </form>
 
 {% endblock %}
