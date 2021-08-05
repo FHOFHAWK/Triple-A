@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from core.models import Lesson, User, Teacher, Student
 from django.shortcuts import redirect, render
 
-from utils.constants import teacher, student
+from utils.constants import teacher, student, admin
 from utils.helpers import check_if_teacher
 from .forms import CreateLessonForm, FilterLessonForm, CreateUserForm, LoginForm
 
@@ -40,7 +40,6 @@ def register(request):
                                                          password=password,
                                                          role=role)
                     teacher_obj.save()
-                    return redirect("/login-user")
                 elif role == student:
                     student_obj = Student.objects.create(username=username,
                                                          first_name=first_name,
@@ -52,6 +51,16 @@ def register(request):
                                                          group_id = 1)
                     student_obj.save()
                     return redirect("/login-user")
+                elif role == admin:
+                    admin_obj = User.objects.create(username=username,
+                                                    first_name=first_name,
+                                                    last_name=last_name,
+                                                    patronymic=patronymic,
+                                                    email=email,
+                                                    password=password,
+                                                    role=role)
+                    admin_obj.save()
+                return redirect("/login-user")
     return render(request, "register.html", {"form": form})
 
 
@@ -64,7 +73,7 @@ def login_u(request):
             password = form.cleaned_data.get("password")
 
             user_from_db = User.objects.filter(email=email)
-            if password == (user_from_db[0]).password:
+            if user_from_db and password == (user_from_db[0]).password:
                 if user_from_db:
                     login(request, user_from_db[0])
                     return redirect('/lessons')
