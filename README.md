@@ -34,3 +34,6 @@ https://triple-a-calendar.herokuapp.com/
 Для фильтрации https://triple-a-calendar.herokuapp.com/filter/
 Для выхода из учетной записи https://triple-a-calendar.herokuapp.com/accounts/logout/
 Панель администратора https://triple-a-calendar.herokuapp.com/admin
+
+
+# ДЛЯ ЗАГРУЗКИ ВИДЕО НУЖНО ЗАЙТИ НА "https://triple-a-calendar.herokuapp.com/get_finished_lessons"
