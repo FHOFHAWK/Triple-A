@@ -10,6 +10,15 @@ class User(AbstractUser):
     role = models.CharField(max_length=40)
     # group = models.ForeignKey(StudyGroup, on_delete=models.CASCADE, null=True, blank=True)
 
+class Role(models.Model):
+    TEACHER = 1
+    STUDENT = 2
+    ROLE_CHOICES = (
+          (TEACHER, 'Teacher'),
+          (STUDENT, 'Student'),
+      )
+    role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, blank=True, null=True)
+
 
 class Subject(models.Model):
     title = models.CharField(max_length=100,default='default title')
