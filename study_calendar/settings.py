@@ -77,10 +77,16 @@ WSGI_APPLICATION = 'study_calendar.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
+
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'decdnptf51qh0o',
+        'USER': 'hdnivrlmmjrvbr',
+        'PASSWORD': '3d790d2646a6da4930319fa83e38a935b3a3466f313c73b51701d7a051932a54',
+        'HOST': 'ec2-52-214-178-113.eu-west-1.compute.amazonaws.com',
+        'PORT': '5432',
     }
+
 }
 import dj_database_url
 db_from_env = dj_database_url.config(conn_max_age=600)
