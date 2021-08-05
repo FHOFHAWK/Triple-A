@@ -1,4 +1,4 @@
-from django.contrib.auth import login
+from django.contrib.auth import login,logout
 from django.contrib.auth.decorators import login_required
 from core.models import Lesson, User, Teacher, Student
 from django.shortcuts import redirect, render
@@ -11,13 +11,17 @@ from .forms import CreateLessonForm, FilterLessonForm, CreateUserForm, LoginForm
 def main(request):
     return render(request, 'main.html')
 
+@login_required
+def sigh_out(request):
+    logout(request)
+    return redirect('/login-user')
 
 def register(request):
     form = CreateUserForm()
     if request.method == "POST":
         form = CreateUserForm(request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get("username")
+            username = form.cleaned_data.get("email")
             first_name = form.cleaned_data.get("first_name")
             last_name = form.cleaned_data.get("last_name")
             patronymic = form.cleaned_data.get("patronymic")
@@ -38,14 +42,15 @@ def register(request):
                     teacher_obj.save()
                     return redirect("/login-user")
                 elif role == student:
-                    teacher_obj = Student.objects.create(username=username,
+                    student_obj = Student.objects.create(username=username,
                                                          first_name=first_name,
                                                          last_name=last_name,
                                                          patronymic=patronymic,
                                                          email=email,
                                                          password=password,
-                                                         role=role)
-                    teacher_obj.save()
+                                                         role=role,
+                                                         group_id = 1)
+                    student_obj.save()
                     return redirect("/login-user")
     return render(request, "register.html", {"form": form})
 

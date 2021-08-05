@@ -6,13 +6,13 @@ from .models import Lesson, FilterLesson, User
 class CreateLessonForm(ModelForm):
     class Meta:
         model = Lesson
-        fields = ["end_time", "start_time", "url_lesson", "title"]
+        fields = ["title", "start_time","end_time", "url_lesson"]
 
 
 class FilterLessonForm(ModelForm):
     class Meta:
         model = FilterLesson
-        fields = ["end_time", "start_time", "url_lesson", "title"]
+        fields = ["title", "start_time","end_time", "url_lesson"]
 
 
 class CreateUserForm(ModelForm):
@@ -20,7 +20,7 @@ class CreateUserForm(ModelForm):
 
     class Meta:
         model = User
-        fields = ["username", "first_name", "last_name", "patronymic", "email", "password", "password_repeat", "role"]
+        fields = ["first_name", "last_name", "patronymic", "email", "password", "password_repeat", "role"]
 
 
 class LoginForm(ModelForm):

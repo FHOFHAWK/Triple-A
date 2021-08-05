@@ -22,8 +22,11 @@
       <div class="col-sm-2">
       {% block sidebar %}
       <ul class="sidebar-nav">
-          <li><a href="/lessons">All lessons</a></li>
-          <li><a href="/filter">Filter</a></li>
+          <li><a href="/lessons">Расписание</a></li>
+          <li><a href="/filter">Фильтр</a></li>
+          {% if user.is_authenticated %}
+						<li><a class="navbar-item" href="/sign_out">Выйти</a></li>
+					{% endif %}
       </ul>
      {% endblock %}
       </div>
