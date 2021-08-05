@@ -20,6 +20,12 @@ class CreateUserForm(ModelForm):
 
     class Meta:
         model = User
+        password = forms.CharField(widget=forms.PasswordInput)
+        password_repeat = forms.CharField(widget=forms.PasswordInput)
+        widgets = {
+            'password': forms.PasswordInput(),
+            'password_repeat' : forms.PasswordInput(),
+        }
         fields = ["first_name", "last_name", "patronymic", "email", "password", "password_repeat", "role"]
 
 class ProfileUserForm(ModelForm):
@@ -30,5 +36,9 @@ class ProfileUserForm(ModelForm):
 
 class LoginForm(ModelForm):
     class Meta:
+        password = forms.CharField(widget=forms.PasswordInput)
+        widgets = {
+            'password': forms.PasswordInput(),
+        }
         model = User
         fields = ["email", "password"]
