@@ -5,9 +5,9 @@
         <br>Фамилия {{user.last_name}}</br>
         <br>Отчество {{user.patronymic}}</br>
         <br>email {{user.email}}</br>
-        {% if role == "student" %}</br>
-        <br>Группа {{user.group_id}}</br>
-        {% endif %}
+        {% ifequal "student" "student" %}</br>
+        <br>Группа {{group}}</br>
+        {% endifequal %}
     </form>
 
 {% endblock %}

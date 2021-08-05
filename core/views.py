@@ -1,8 +1,9 @@
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import Group
 from django.http import HttpResponse
 from django.db.models import Q
-from core.models import Lesson, User, Teacher, Student
+from core.models import Lesson, StudyGroup, User, Teacher, Student
 from django.shortcuts import redirect, render
 from utils.constants import student, teacher
 from utils.constants import teacher, student, admin
@@ -46,14 +47,15 @@ def register(request):
                     teacher_obj.save()
                     print('g')
                 elif role == student:
-                    student_obj = Student.objects.create(username=username,
+                    student_obj = Student(username=username,
                                                          first_name=first_name,
                                                          last_name=last_name,
                                                          patronymic=patronymic,
                                                          email=email,
                                                          password=password,
-                                                         role=role,
-                                                         group_id=1)
+                                                         role=role
+                                                         )
+                    student_obj.group.add(1)
                     student_obj.save()
                     return redirect("/login-user")
                 elif role == admin:
@@ -146,10 +148,12 @@ def filter_lessons(request):
 
             return render(request, "filter.html", {"form": form, "lessons": lessons})
 
+@auth_user_only
 def profile(request):
-    print(request.user.id)
     if request.user.role == student:
-        return render(request,"profile.html", {"user" : request.user, "role" : "student"})
+        our_student = Student.objects.filter(id=request.user.id).first()
+        print(our_student.id)
+        return render(request,"profile.html", {"user" : our_student, "role" : "student", "group" : StudyGroup.objects.filter(student=our_student).first().group_title})
     elif request.user.role == teacher:
         return render(request, "profile.html", {"user" : request.user, "role" : "student"})
     return render(request,"profile.html",{"user" : request.user})
