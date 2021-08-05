@@ -33,6 +33,7 @@ def register(request):
                                            password=password,
                                            role=role)
                 user.save()
+                return redirect('/login-user')
     return render(request, "register.html", {"form": form})
 
 
