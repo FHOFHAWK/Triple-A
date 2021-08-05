@@ -1,0 +1,11 @@
+<h1 align='center'>Доступные для {{ lesson_title }} преподаватели:</h1>
+
+{% for teacher in available_teachers %}
+    <tr>
+        <li>Имя преподавателя: {{ teacher.first_name }}</li>
+        <li>Фамилия преподавателя: {{ teacher.last_name }}</li>
+        <li>Отчество преподавателя: {{ teacher.patronymic }}</li>
+        <button type="submit">Добавить преподавателя</button>
+        <br></br>
+    </tr>
+{% endfor %}
