@@ -6,9 +6,16 @@
         {%for lesson in lessons %}
             <form action="{% url 'delete_lesson' lesson.id %}" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
-                <li>Название предмета: {{lesson.title}}</li>
-                <li>{{lesson.start_time}} - {{lesson.end_time}}</li>
-                <li>Ссылка на подключение: {{lesson.url_lesson}}</li>
+                <div class="list-item">
+                	<label class="checkbox">
+                    	<span class="complete-">                
+                            Название предмета: {{lesson.title}}
+                            <li>Ссылка на подключение: {{lesson.url_lesson}}</li>
+                        </span>
+                	</label>
+                	<strong class="is-pulled-right"><i class="fa fa-calendar"></i>{{lesson.start_time}} - {{lesson.end_time}}</strong>
+            	</div>
+
                 {% if user.role == "Teacher" %}
                 <button type="submit">Удалить урок</button>
                 <button type="submit" name="Load lesson">Загрузить запись</button>
@@ -25,5 +32,4 @@
     <button type="submit">Добавить урок</button>
 </form>
 {% endif %}
-
 {% endblock %}
