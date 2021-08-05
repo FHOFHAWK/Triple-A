@@ -1,0 +1,13 @@
+{% extends 'base_generic.html' %}
+{% block content %}
+    <form action="{% url 'profile'%}" method="POST" enctype="multipart/form-data">
+        <br>Имя {{user.first_name}}</br >
+        <br>Фамилия {{user.last_name}}</br>
+        <br>Отчество {{user.patronymic}}</br>
+        <br>email {{user.email}}</br>
+        {% ifequal "student" "student" %}</br>
+        <br>Группа {{group}}</br>
+        {% endifequal %}
+    </form>
+
+{% endblock %}

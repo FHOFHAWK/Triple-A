@@ -13,6 +13,7 @@ urlpatterns = [
     path('filter/', views.filter_lessons, name="filter"),
     path('accounts/', include('django.contrib.auth.urls')),
     path('sign_out/', views.sigh_out, name="sigh_out"),
+    path('profile/', views.profile, name='profile'),
     path('add-teacher-to-lesson/', views.list_lessons_for_choose_teacher, name="list_lessons_for_choose_teacher"),
     path('add-teacher-to-lesson/<int:lesson_id>', views.add_teacher_to_lesson, name="add_teacher_to_lesson"),
     path('accounts/', include('django.contrib.auth.urls'))
