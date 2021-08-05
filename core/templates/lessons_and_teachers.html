@@ -1,0 +1,12 @@
+<h1 align='center'>Выберите предмет для добавления преподавателя:</h1>
+
+{% for lesson in lessons %}
+    <tr>
+        <form action="{% url 'add_teacher_to_lesson' lesson.id %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <li>Название предмета: {{ lesson.title }}</li>
+            <button type="submit">Добавить преподавателя</button>
+            <br></br>
+        </form>
+    </tr>
+{% endfor %}

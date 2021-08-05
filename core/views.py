@@ -1,20 +1,24 @@
-from django.contrib.auth import login,logout
+from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+from django.db.models import Q
 from core.models import Lesson, User, Teacher, Student
 from django.shortcuts import redirect, render
 
 from utils.constants import teacher, student, admin
-from utils.helpers import check_if_teacher
+from utils.helpers import check_if_teacher, admin_only, auth_user_only
 from .forms import CreateLessonForm, FilterLessonForm, CreateUserForm, LoginForm
 
 
 def main(request):
     return render(request, 'main.html')
 
+
 @login_required
 def sigh_out(request):
     logout(request)
     return redirect('/login-user')
+
 
 def register(request):
     form = CreateUserForm()
@@ -40,6 +44,7 @@ def register(request):
                                                          password=password,
                                                          role=role)
                     teacher_obj.save()
+                    print('g')
                 elif role == student:
                     student_obj = Student.objects.create(username=username,
                                                          first_name=first_name,
@@ -48,7 +53,7 @@ def register(request):
                                                          email=email,
                                                          password=password,
                                                          role=role,
-                                                         group_id = 1)
+                                                         group_id=1)
                     student_obj.save()
                     return redirect("/login-user")
                 elif role == admin:
@@ -85,6 +90,7 @@ def recovery_password(request):
     return render(request, 'recovery-password.html')
 
 
+@auth_user_only
 @login_required
 def get_lessons(request):
     if user := check_if_teacher(user=request.user):
@@ -107,6 +113,7 @@ def get_lessons(request):
     return render(request, "lesson.html", {"form": form, "lessons": lessons})
 
 
+@auth_user_only
 def delete_lesson(request, pk):
     if request.method == "POST":
         lesson = Lesson.objects.filter(id=int(pk))
@@ -116,6 +123,7 @@ def delete_lesson(request, pk):
     return redirect('/lessons')
 
 
+@auth_user_only
 def filter_lessons(request):
     form = FilterLessonForm()
     if request.method == "GET":
@@ -137,3 +145,22 @@ def filter_lessons(request):
             #   lessons = Lesson.objects.all().filter(teacher=teacher)
 
             return render(request, "filter.html", {"form": form, "lessons": lessons})
+
+
+@auth_user_only
+@admin_only
+def list_lessons_for_choose_teacher(request):
+    if request.method == "GET":
+        lessons = Lesson.objects.all()
+        teachers = Teacher.objects.all()
+        return render(request, "lessons_and_teachers.html", {"lessons": lessons, "teachers": teachers})
+
+
+@auth_user_only
+@admin_only
+def add_teacher_to_lesson(request, lesson_id):
+    if request.method == "GET":
+        lesson = Lesson.objects.get(id=lesson_id)
+        available_teachers = [teacher for teacher in Teacher.objects.all() if teacher not in lesson.teachers.all()]
+        return render(request, "add_teacher_to_lesson.html", {"available_teachers": available_teachers,
+                                                              "lesson_title": lesson.title})
