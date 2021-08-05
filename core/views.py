@@ -225,3 +225,5 @@ def upload_video(request, lesson_id):
         fs.save(upload_video_file.name, upload_video_file)
         if file_unique(media_folder="media/", file_name=upload_video_file.name, lesson_id=lesson_id):
             return render(request, "success_file.html")
+        else:
+            return HttpResponse("ТАКОЙ ВИДОС УЖЕ БЫЛ ЗАГРУЖЕН")
