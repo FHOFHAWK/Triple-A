@@ -48,10 +48,6 @@ class Lesson(models.Model):
     end_time = models.TimeField()
 
 
-class HashedVideos(models.Model):
-    hash = models.BinaryField()
-
-
 class FilterLesson(models.Model):
     title = models.CharField(max_length=100, blank=True, null=True)
     # teachers = models.ManyToManyField(Person)

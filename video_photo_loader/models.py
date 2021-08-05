@@ -1,3 +1,5 @@
 from django.db import models
 
-# Create your models here.
+
+class LessonVideo(models.Model):
+    video_hash = models.CharField(max_length=256)
