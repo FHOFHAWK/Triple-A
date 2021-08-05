@@ -2,10 +2,13 @@
 
 {% for teacher in available_teachers %}
     <tr>
-        <li>Имя преподавателя: {{ teacher.first_name }}</li>
-        <li>Фамилия преподавателя: {{ teacher.last_name }}</li>
-        <li>Отчество преподавателя: {{ teacher.patronymic }}</li>
-        <button type="submit">Добавить преподавателя</button>
-        <br></br>
+        <form action="{% url 'add_teacher_to_lesson' lesson.id %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <li>Имя преподавателя: {{ teacher.first_name }}</li>
+            <li>Фамилия преподавателя: {{ teacher.last_name }}</li>
+            <li>Отчество преподавателя: {{ teacher.patronymic }}</li>
+            <button type="submit">Добавить преподавателя</button>
+            <br></br>
+        </form>
     </tr>
 {% endfor %}

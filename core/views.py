@@ -7,7 +7,7 @@ from core.models import Lesson, StudyGroup, User, Teacher, Student
 from django.shortcuts import redirect, render
 from utils.constants import student, teacher
 from utils.constants import teacher, student, admin
-from utils.helpers import check_if_teacher, admin_only, auth_user_only
+from utils.helpers import check_if_teacher, admin_only, auth_user_only, teacher_and_admin_only
 from .forms import CreateLessonForm, FilterLessonForm, CreateUserForm, LoginForm
 
 
@@ -48,13 +48,13 @@ def register(request):
                     print('g')
                 elif role == student:
                     student_obj = Student(username=username,
-                                                         first_name=first_name,
-                                                         last_name=last_name,
-                                                         patronymic=patronymic,
-                                                         email=email,
-                                                         password=password,
-                                                         role=role
-                                                         )
+                                          first_name=first_name,
+                                          last_name=last_name,
+                                          patronymic=patronymic,
+                                          email=email,
+                                          password=password,
+                                          role=role
+                                          )
                     student_obj.group.add(1)
                     student_obj.save()
                     return redirect("/login-user")
@@ -148,23 +148,26 @@ def filter_lessons(request):
 
             return render(request, "filter.html", {"form": form, "lessons": lessons})
 
+
 @auth_user_only
 def profile(request):
     if request.user.role == student:
         our_student = Student.objects.filter(id=request.user.id).first()
         print(our_student.id)
-        return render(request,"profile.html", {"user" : our_student, "role" : "student", "group" : StudyGroup.objects.filter(student=our_student).first().group_title})
+        return render(request, "profile.html", {"user": our_student, "role": "student",
+                                                "group": StudyGroup.objects.filter(
+                                                    student=our_student).first().group_title})
     elif request.user.role == teacher:
-        return render(request, "profile.html", {"user" : request.user, "role" : "student"})
-    return render(request,"profile.html",{"user" : request.user})
+        return render(request, "profile.html", {"user": request.user, "role": "student"})
+    return render(request, "profile.html", {"user": request.user})
+
 
 @auth_user_only
 @admin_only
 def list_lessons_for_choose_teacher(request):
     if request.method == "GET":
         lessons = Lesson.objects.all()
-        teachers = Teacher.objects.all()
-        return render(request, "lessons_and_teachers.html", {"lessons": lessons, "teachers": teachers})
+        return render(request, "lessons_and_teachers.html", {"lessons": lessons})
 
 
 @auth_user_only
@@ -175,3 +178,16 @@ def add_teacher_to_lesson(request, lesson_id):
         available_teachers = [teacher for teacher in Teacher.objects.all() if teacher not in lesson.teachers.all()]
         return render(request, "add_teacher_to_lesson.html", {"available_teachers": available_teachers,
                                                               "lesson_title": lesson.title})
+
+
+@auth_user_only
+@admin_only
+def post_teacher_to_lesson(request, teacher_id):
+    print(teacher_id)
+
+
+@teacher_and_admin_only
+@auth_user_only
+def get_finished_lessons(request):
+    finished_lessons_without_video = Lesson.objects.filter(finished=True, teachers=request.user, video_uploaded=False)
+    return render(request, "finished_lessons.html", {"finished_lessons": finished_lessons_without_video})

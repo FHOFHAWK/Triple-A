@@ -1,0 +1,9 @@
+<h1 align='center'>Ваши проведенные лекции, в которые нужно загрузить видеозапись:</h1>
+
+{% for lesson in finished_lessons %}
+    <tr>
+        Название предмета: {{ lesson.title }}
+        <button type="submit" >Загрузить видео</button>
+        <br></br>
+    </tr>
+{% endfor %}

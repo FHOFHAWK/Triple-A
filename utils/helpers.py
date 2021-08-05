@@ -33,3 +33,14 @@ def admin_only(function):
             return HttpResponse('Данный функционал не доступен')
 
     return wrap
+
+
+def teacher_and_admin_only(function):
+    @wraps(function)
+    def wrap(request, *args, **kwargs):
+        if request.user.role == teacher or request.user.role == admin:
+            return function(request, *args, **kwargs)
+        else:
+            return HttpResponse('Данный функционал не доступен студентам')
+
+    return wrap

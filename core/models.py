@@ -46,6 +46,8 @@ class Lesson(models.Model):
     url_lesson = models.URLField()
     start_time = models.TimeField()
     end_time = models.TimeField()
+    finished = models.BooleanField(default=False)
+    video_uploaded = models.BooleanField(default=False)
 
 
 class FilterLesson(models.Model):
