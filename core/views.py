@@ -2,7 +2,7 @@ from django.contrib.auth import login,logout
 from django.contrib.auth.decorators import login_required
 from core.models import Lesson, User, Teacher, Student
 from django.shortcuts import redirect, render
-
+from utils.constants import student, teacher
 from utils.constants import teacher, student, admin
 from utils.helpers import check_if_teacher
 from .forms import CreateLessonForm, FilterLessonForm, CreateUserForm, LoginForm
@@ -137,3 +137,11 @@ def filter_lessons(request):
             #   lessons = Lesson.objects.all().filter(teacher=teacher)
 
             return render(request, "filter.html", {"form": form, "lessons": lessons})
+
+def profile(request):
+    print(request.user.id)
+    if request.user.role == student:
+        return render(request,"profile.html", {"user" : request.user, "role" : "student"})
+    elif request.user.role == teacher:
+        return render(request, "profile.html", {"user" : request.user, "role" : "student"})
+    return render(request,"profile.html",{"user" : request.user})
