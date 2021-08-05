@@ -36,6 +36,7 @@ def register(request):
                                                          password=password,
                                                          role=role)
                     teacher_obj.save()
+                    return redirect("/login-user")
                 elif role == student:
                     teacher_obj = Student.objects.create(username=username,
                                                          first_name=first_name,
@@ -45,6 +46,7 @@ def register(request):
                                                          password=password,
                                                          role=role)
                     teacher_obj.save()
+                    return redirect("/login-user")
                 elif role == admin:
                     admin_obj = User.objects.create(username=username,
                                                     first_name=first_name,
