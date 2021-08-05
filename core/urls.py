@@ -14,9 +14,9 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('sign_out/', views.sigh_out, name="sigh_out"),
     path('profile/', views.profile, name='profile'),
-    path('add-teacher-to-lesson/', views.list_lessons_for_choose_teacher, name="list_lessons_for_choose_teacher"),
-    path('add-teacher-to-lesson/<int:lesson_id>', views.add_teacher_to_lesson, name="add_teacher_to_lesson"),
-    path('post_teacher_to_lesson/<int:teacher_id>', views.post_teacher_to_lesson, name="post_teacher_to_lesson"),
+    path('add_teacher_to_lesson/', views.list_lessons_for_choose_teacher, name="list_lessons_for_choose_teacher"),
+    path('add_teacher_to_lesson/<int:lesson_id>', views.add_teacher_to_lesson, name="add_teacher_to_lesson"),
+    path('post_teacher_to_lesson/<int:teacher_id>/<int:lesson_id>', views.post_teacher_to_lesson, name="post_teacher_to_lesson"),
     path('accounts/', include('django.contrib.auth.urls')),
 
     path('get_finished_lessons', views.get_finished_lessons, name="get_finished_lessons")

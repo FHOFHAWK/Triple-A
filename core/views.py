@@ -180,17 +180,25 @@ def list_lessons_for_choose_teacher(request):
 @auth_user_only
 @admin_only
 def add_teacher_to_lesson(request, lesson_id):
-    if request.method == "GET":
+    if request.method == "POST":
         lesson = Lesson.objects.get(id=lesson_id)
         available_teachers = [teacher for teacher in Teacher.objects.all() if teacher not in lesson.teachers.all()]
         return render(request, "add_teacher_to_lesson.html", {"available_teachers": available_teachers,
-                                                              "lesson_title": lesson.title})
+                                                              "lesson_title": lesson.title,
+                                                              "lesson_id": lesson_id})
 
 
 @auth_user_only
 @admin_only
-def post_teacher_to_lesson(request, teacher_id):
-    print(teacher_id)
+def post_teacher_to_lesson(request, teacher_id, lesson_id):
+    teacher = Teacher.objects.get(id=teacher_id)
+    Lesson.objects.get(id=lesson_id).teachers.add(teacher)
+    lesson = Lesson.objects.get(id=lesson_id)
+    available_teachers = [teacher for teacher in Teacher.objects.all() if teacher not in lesson.teachers.all()]
+    return render(request, "add_teacher_to_lesson.html", {"available_teachers": available_teachers,
+                                                              "lesson_title": lesson.title,
+                                                              "lesson_id": lesson_id})
+
 
 
 @teacher_and_admin_only
