@@ -1,8 +1,10 @@
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-from core.models import Lesson, User
+from core.models import Lesson, User, Teacher, Student
 from django.shortcuts import redirect, render
 
+from utils.constants import teacher, student
+from utils.helpers import check_if_teacher
 from .forms import CreateLessonForm, FilterLessonForm, CreateUserForm, LoginForm
 
 
@@ -25,14 +27,24 @@ def register(request):
             role = form.cleaned_data.get("role")
 
             if password == password_repeat:
-                user = User.objects.create(username=username,
-                                           first_name=first_name,
-                                           last_name=last_name,
-                                           patronymic=patronymic,
-                                           email=email,
-                                           password=password,
-                                           role=role)
-                user.save()
+                if role == teacher:
+                    teacher_obj = Teacher.objects.create(username=username,
+                                                         first_name=first_name,
+                                                         last_name=last_name,
+                                                         patronymic=patronymic,
+                                                         email=email,
+                                                         password=password,
+                                                         role=role)
+                    teacher_obj.save()
+                elif role == student:
+                    teacher_obj = Student.objects.create(username=username,
+                                                         first_name=first_name,
+                                                         last_name=last_name,
+                                                         patronymic=patronymic,
+                                                         email=email,
+                                                         password=password,
+                                                         role=role)
+                    teacher_obj.save()
     return render(request, "register.html", {"form": form})
 
 
@@ -59,9 +71,9 @@ def recovery_password(request):
 
 @login_required
 def get_lessons(request):
-    # if user := check_if_teacher(username=request.user):
-    #     teacher_lessons = Lesson.objects.filter()
-    #     return render(request, "lesson.html", {"form": form, "lessons": lessons})
+    if user := check_if_teacher(user=request.user):
+        teacher_lessons = Lesson.objects.filter(teachers=user)
+        return render(request, "teacher_lessons.html", {"teacher_lessons": teacher_lessons})
     form = CreateLessonForm()
     if request.method == "GET":
         lessons = Lesson.objects.all()
@@ -80,8 +92,6 @@ def get_lessons(request):
 
 
 def delete_lesson(request, pk):
-    print(request)
-    print(pk)
     if request.method == "POST":
         lesson = Lesson.objects.filter(id=int(pk))
         lesson.delete()

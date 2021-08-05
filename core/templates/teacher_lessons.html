@@ -1,0 +1,10 @@
+{% load crispy_forms_tags %}
+<h1>Предметы, которые вы ведете:</h1>
+<table>
+    {% for teacher_lesson in teacher_lessons %}
+        <li>Название предмета: {{ teacher_lesson.title }}</li>
+        <li>{{ teacher_lesson.start_time }} - {{ teacher_lesson.end_time }}</li>
+        <li>Ссылка на подключение: {{ teacher_lesson.url_lesson }}</li>
+    {% endfor %}
+</table>
+
