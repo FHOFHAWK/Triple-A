@@ -1,9 +1,5 @@
 from django.db import models
-from django import forms
 from django.contrib.auth.models import AbstractUser
-from django.dispatch import receiver
-from django.db.models.signals import post_save
-
 
 class StudyGroup(models.Model):
     group_title = models.CharField(max_length=15)
@@ -12,10 +8,23 @@ class StudyGroup(models.Model):
 class User(AbstractUser):
     patronymic = models.CharField(max_length=40)
     role = models.CharField(max_length=40)
-    group = models.ForeignKey(StudyGroup, on_delete=models.CASCADE, null=True, blank=True)
+    # group = models.ForeignKey(StudyGroup, on_delete=models.CASCADE, null=True, blank=True)
 
+
+class Subject(models.Model):
+    title = models.CharField(max_length=100,default='default title')
+
+class Student(User):
+    group = models.ForeignKey(StudyGroup, on_delete=models.CASCADE)
+
+class Teacher(User):
+    count_of_lessons = models.IntegerField()
+    count_of_completed_lessons = models.IntegerField()
+    teaching_subjets = models.ManyToManyField(Subject)
+    teaching_students = models.ManyToManyField(Student)
 
 class Lesson(models.Model):
+    subject = models.OneToOneField(Subject, on_delete=models.SET_NULL,null=True)
     title = models.CharField(max_length=100)
     # teachers = models.ManyToManyField(Person)
     # groups = models.ManyToManyField(StudyGroup)
@@ -23,6 +32,8 @@ class Lesson(models.Model):
     start_time = models.TimeField()
     end_time = models.TimeField()
 
+class HasedVides(models.Model):
+    hash = models.BinaryField()
 
 class FilterLesson(models.Model):
     title = models.CharField(max_length=100, blank=True, null=True)
