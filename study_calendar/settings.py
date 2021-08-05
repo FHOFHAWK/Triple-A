@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'core.apps.CoreConfig',
     'crispy_forms',
+    "video_photo_loader.apps.VideoPhotoLoaderConfig"
 ]
 
 MIDDLEWARE = [
