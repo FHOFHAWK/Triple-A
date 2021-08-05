@@ -1,16 +1,16 @@
 # Triple-A
 
-> [Стартовая страница приложения](http://127.0.0.1:8000/)
+> [Стартовая страница приложения](https://triple-a-calendar.herokuapp.com/)
 
 ### Для взаимодействия с системой требуется предварительная регистрация нового пользователя
 
-> [Регистрация нового пользователя](http://127.0.0.1:8000/register/)
+> [Регистрация нового пользователя](https://triple-a-calendar.herokuapp.com/register/)
 
 ### Функционал администратора:
 
 > Предварительно требуется регистрация нового пользователя с ролью Admin
 
-[Добавить преподавателя для конкретного занятия ](http://127.0.0.1:8000/add-teacher-to-lesson/)
+[Добавить преподавателя для конкретного занятия ](https://triple-a-calendar.herokuapp.com/add-teacher-to-lesson/)
 
 ### Функционал преподавателя:
 
@@ -26,7 +26,11 @@
 
 ### Для запуска зайти на
 
-https://polar-bayou-62742.herokuapp.com/
-Для просмотра пар https://polar-bayou-62742.herokuapp.com/lessons
-Для фильтрации https://polar-bayou-62742.herokuapp.com/filter
-Для выхода из учетной записи https://polar-bayou-62742.herokuapp.com/accounts/logout/
+https://triple-a-calendar.herokuapp.com/
+Учетная запись администратора: 
+  Логин: sasha@a.ru 
+  Пароль: 1234
+Для просмотра пар https://triple-a-calendar.herokuapp.com/lessons/
+Для фильтрации https://triple-a-calendar.herokuapp.com/filter/
+Для выхода из учетной записи https://triple-a-calendar.herokuapp.com/accounts/logout/
+Панель администратора https://triple-a-calendar.herokuapp.com/admin
