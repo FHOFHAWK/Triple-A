@@ -1,6 +1,7 @@
 {% extends 'base_generic.html' %}
 {% block content %}
 {% load crispy_forms_tags %}
+<h1>Ваши предметы:</h1>
     <table>
         {%for lesson in lessons %}
             <form action="{% url 'delete_lesson' lesson.id %}" method="POST" enctype="multipart/form-data">
