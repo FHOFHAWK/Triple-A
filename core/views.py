@@ -9,6 +9,8 @@ from utils.constants import student, teacher
 from utils.constants import teacher, student, admin
 from utils.helpers import check_if_teacher, admin_only, auth_user_only, teacher_and_admin_only
 from .forms import CreateLessonForm, FilterLessonForm, CreateUserForm, LoginForm
+from utils.helpers import check_if_teacher, admin_only, auth_user_only
+from .forms import CreateLessonForm, FilterLessonForm, CreateUserForm, LoginForm, ProfileUserForm
 
 
 def main(request):
@@ -154,11 +156,24 @@ def profile(request):
     if request.user.role == student:
         our_student = Student.objects.filter(id=request.user.id).first()
         print(our_student.id)
-        return render(request, "profile.html", {"user": our_student, "role": "student",
-                                                "group": StudyGroup.objects.filter(
-                                                    student=our_student).first().group_title})
+        form = ProfileUserForm(initial={"first_name": our_student.first_name
+            , "last_name": our_student.last_name
+            , "patronymic": our_student.patronymic
+            , "email": our_student.email})
+        return render(request, "profile.html",
+                      {"form": form, "user": our_student, "role": "student",
+                       "group": StudyGroup.objects.filter(student=our_student).first().group_title})
     elif request.user.role == teacher:
-        return render(request, "profile.html", {"user": request.user, "role": "student"})
+        our_teacher = Teacher.objects.filter(id=request.user.id).first()
+        form = ProfileUserForm(initial={"first_name": our_teacher.first_name
+            , "last_name": our_teacher.last_name
+            , "patronymic": our_teacher.patronymic
+            , "email": our_teacher.email})
+        complete_lessons = our_teacher.count_of_lessons
+        loaded_lessons = our_teacher.count_of_completed_lessons
+        return render(request, "profile.html",
+                      {"form": form, "user": our_teacher, "user": request.user, "role": "teacher",
+                       "completed_lessons": complete_lessons, "loaded_lessons": loaded_lessons})
     return render(request, "profile.html", {"user": request.user})
 
 

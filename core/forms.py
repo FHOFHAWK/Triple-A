@@ -22,6 +22,11 @@ class CreateUserForm(ModelForm):
         model = User
         fields = ["first_name", "last_name", "patronymic", "email", "password", "password_repeat", "role"]
 
+class ProfileUserForm(ModelForm):
+    class Meta:
+        model = User
+        fields = ["first_name", "last_name", "patronymic", "email"]
+
 
 class LoginForm(ModelForm):
     class Meta:
