@@ -19,5 +19,6 @@ urlpatterns = [
     path('post_teacher_to_lesson/<int:teacher_id>/<int:lesson_id>', views.post_teacher_to_lesson, name="post_teacher_to_lesson"),
     path('accounts/', include('django.contrib.auth.urls')),
 
-    path('get_finished_lessons', views.get_finished_lessons, name="get_finished_lessons")
+    path('get_finished_lessons', views.get_finished_lessons, name="get_finished_lessons"),
+    path('upload_video/<int:lesson_id>', views.upload_video, name="upload_video")
 ]

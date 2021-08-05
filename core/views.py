@@ -1,9 +1,13 @@
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+from django.core.files.storage import FileSystemStorage
+
 from core.models import Lesson, StudyGroup, User, Teacher, Student
 from django.shortcuts import redirect, render
 from utils.constants import teacher, student, admin
 from utils.helpers import check_if_teacher, admin_only, auth_user_only, teacher_and_admin_only
+from utils.video_comparison import file_unique
 from .forms import CreateLessonForm, FilterLessonForm, CreateUserForm, LoginForm, ProfileUserForm
 
 
@@ -210,3 +214,14 @@ def post_teacher_to_lesson(request, teacher_id, lesson_id):
 def get_finished_lessons(request):
     finished_lessons_without_video = Lesson.objects.filter(finished=True, teachers=request.user, video_uploaded=False)
     return render(request, "finished_lessons.html", {"finished_lessons": finished_lessons_without_video})
+
+
+@teacher_and_admin_only
+@auth_user_only
+def upload_video(request, lesson_id):
+    if request.method == "POST":
+        upload_video_file = request.FILES['video']
+        fs = FileSystemStorage()
+        fs.save(upload_video_file.name, upload_video_file)
+        if file_unique(media_folder="media/", file_name=upload_video_file.name, lesson_id=lesson_id):
+            return render(request, "success_file.html")

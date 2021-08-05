@@ -2,8 +2,12 @@
 
 {% for lesson in finished_lessons %}
     <tr>
-        Название предмета: {{ lesson.title }}
-        <button type="submit" >Загрузить видео</button>
-        <br></br>
+        <form action="{% url 'upload_video' lesson.id %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            Название предмета: {{ lesson.title }}
+            <input type="file" name="video">
+            <button type="submit">Загрузить видео</button>
+            <br></br>
+        </form>
     </tr>
 {% endfor %}
