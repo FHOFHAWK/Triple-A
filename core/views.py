@@ -1,23 +1,9 @@
-from django import forms
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-from django.http.response import HttpResponse
-from core.models import Lesson, User, StudyGroup
+from core.models import Lesson, User
 from django.shortcuts import redirect, render
+
 from .forms import CreateLessonForm, FilterLessonForm, CreateUserForm, LoginForm
-
-
-def authenticate(username=None, password=None, **kwargs):
-    from django.contrib.auth import get_user_model
-    UserModel = get_user_model()
-    if username is None:
-        username = kwargs.get(UserModel.USERNAME_FIELD)
-    try:
-        user = UserModel._default_manager.get_by_natural_key(username)
-        if user.check_password(password):
-            return user
-    except UserModel.DoesNotExist:
-        UserModel().set_password(password)
 
 
 def main(request):
@@ -73,6 +59,9 @@ def recovery_password(request):
 
 @login_required
 def get_lessons(request):
+    # if user := check_if_teacher(username=request.user):
+    #     teacher_lessons = Lesson.objects.filter()
+    #     return render(request, "lesson.html", {"form": form, "lessons": lessons})
     form = CreateLessonForm()
     if request.method == "GET":
         lessons = Lesson.objects.all()
