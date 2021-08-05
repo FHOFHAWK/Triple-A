@@ -10,8 +10,8 @@
                 <li>Ссылка на подключение: {{lesson.url_lesson}}</li>
                 {% if user.role == "Teacher" %}
                 <button type="submit">Удалить урок</button>
-                {% endif %}
                 <button type="submit" name="Load lesson">Загрузить запись</button>
+                {% endif %}
                 <br></br>
             </form>
         {% endfor %}
