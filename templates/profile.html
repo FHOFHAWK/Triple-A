@@ -9,10 +9,11 @@
         <button type="submit">Сохранить</button>
         <br>
         {% ifequal role "teacher" %}
+        Загружено {{count}} ({{loaded_lessons}} из {{completed_lessons}}) % лекций<br>
             {% if loaded_lessons == completed_lessons %}
                 Все хорошо! Все лекции загружены!<br>
             {% else %}
-                <a href="../get_finished_lessons"> У вас есть незагруженные лекции!</a>   
+                <a href="../get_finished_lessons"> У вас есть незагруженные лекции!</a>  
             {% endif %}
         {% endifequal %}
         

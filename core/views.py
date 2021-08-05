@@ -163,9 +163,13 @@ def profile(request):
             , "email": our_teacher.email})
         complete_lessons = our_teacher.count_of_lessons
         loaded_lessons = our_teacher.count_of_completed_lessons
+        if complete_lessons != 0:
+            counted = (loaded_lessons / complete_lessons) * 100
+        else:
+            counted = 0
         return render(request, "profile.html",
                       {"form": form, "user": our_teacher, "user": request.user, "role": "teacher",
-                       "completed_lessons": complete_lessons, "loaded_lessons": loaded_lessons})
+                       "completed_lessons": complete_lessons, "loaded_lessons": loaded_lessons, "count" : counted})
     return render(request, "profile.html", {"user": request.user})
 
 

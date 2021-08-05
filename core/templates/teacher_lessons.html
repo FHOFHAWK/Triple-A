@@ -1,3 +1,5 @@
+{% extends 'base_generic.html' %}
+{% block content %}
 {% load crispy_forms_tags %}
 <h1>Предметы, которые вы ведете:</h1>
 <table>
@@ -7,4 +9,4 @@
         <li>Ссылка на подключение: {{ teacher_lesson.url_lesson }}</li>
     {% endfor %}
 </table>
-
+{% endblock %}
