@@ -12,6 +12,7 @@ class User(AbstractUser):
     class Role(models.TextChoices):
         TEACHER = "Teacher", _("Teacher")
         STUDENT = "Student", _("Student")
+        ADMIN = "Admin", _("Admin")
 
     patronymic = models.CharField(max_length=40)
     role = models.CharField(choices=Role.choices,
@@ -24,27 +25,30 @@ class Subject(models.Model):
 
 
 class Student(User):
-    group = models.ForeignKey(StudyGroup, on_delete=models.CASCADE)
+    group = models.ForeignKey(StudyGroup,
+                              on_delete=models.CASCADE,
+                              blank=True,
+                              null=True)
 
 
 class Teacher(User):
-    count_of_lessons = models.IntegerField()
-    count_of_completed_lessons = models.IntegerField()
-    teaching_subjets = models.ManyToManyField(Subject)
+    count_of_lessons = models.IntegerField(default=0)
+    count_of_completed_lessons = models.IntegerField(default=0)
+    teaching_subjects = models.ManyToManyField(Subject)
     teaching_students = models.ManyToManyField(Student)
 
 
 class Lesson(models.Model):
     subject = models.OneToOneField(Subject, on_delete=models.SET_NULL, null=True)
     title = models.CharField(max_length=100)
-    # teachers = models.ManyToManyField(Person)
+    teachers = models.ManyToManyField(Teacher)
     # groups = models.ManyToManyField(StudyGroup)
     url_lesson = models.URLField()
     start_time = models.TimeField()
     end_time = models.TimeField()
 
 
-class HasedVides(models.Model):
+class HashedVideos(models.Model):
     hash = models.BinaryField()
 
 

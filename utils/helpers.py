@@ -1,9 +1,9 @@
 from core.models import User
+from utils.constants import teacher
 
 
-def check_if_teacher(username: str):
-    obj = User.objects.filter(username=username)
-    if obj.role == "teacher":
-        return obj
+def check_if_teacher(user: User):
+    if user.role == teacher:
+        return user
     else:
         return None
